@@ -61,36 +61,6 @@ TcpMgr::TcpMgr():_host(""),_port(0),_b_recv_pending(false),_message_id(0),_messa
         Q_UNUSED(socketError)
         qDebug() << "Error:" << _socket.errorString();
        });
-
-    // 处理错误（适用于Qt 5.15之前的版本）
-    // QObject::connect(&_socket, static_cast<void (QTcpSocket::*)(QTcpSocket::SocketError)>(&QTcpSocket::error),
-    //                  [&](QTcpSocket::SocketError socketError) {
-    //                      qDebug() << "Error:" << _socket.errorString() ;
-    //                      switch (socketError) {
-    //                      case QTcpSocket::ConnectionRefusedError:
-    //                          qDebug() << "Connection Refused!";
-    //                          emit sig_con_success(false);
-    //                          break;
-    //                      case QTcpSocket::RemoteHostClosedError:
-    //                          qDebug() << "Remote Host Closed Connection!";
-    //                          break;
-    //                      case QTcpSocket::HostNotFoundError:
-    //                          qDebug() << "Host Not Found!";
-    //                          emit sig_con_success(false);
-    //                          break;
-    //                      case QTcpSocket::SocketTimeoutError:
-    //                          qDebug() << "Connection Timeout!";
-    //                          emit sig_con_success(false);
-    //                          break;
-    //                      case QTcpSocket::NetworkError:
-    //                          qDebug() << "Network Error!";
-    //                          break;
-    //                      default:
-    //                          qDebug() << "Other Error!";
-    //                          break;
-    //                      }
-    //                  });
-
     // 处理连接断开
     QObject::connect(&_socket, &QTcpSocket::disconnected, [&]() {
         qDebug() << "Disconnected from server.";
@@ -131,10 +101,20 @@ void TcpMgr::initHandlers(){
             return;
         }
 
-        UserMgr::GetInstance()->SetUid(jsonObj["uid"].toInt());
-        UserMgr::GetInstance()->SetUid(jsonObj["name"].toInt());
-        UserMgr::GetInstance()->SetUid(jsonObj["token"].toInt());
+        auto uid = jsonObj["uid"].toInt();
+        auto name = jsonObj["name"].toString();
+        auto nick = jsonObj["nick"].toString();
+        auto icon = jsonObj["icon"].toString();
+        auto sex = jsonObj["sex"].toInt();
+        auto desc = jsonObj["desc"].toString();
+        auto user_info = std::make_shared<UserInfo>(uid, name, nick, icon, sex,"",desc);
 
+        UserMgr::GetInstance()->SetUserInfo(user_info);
+        UserMgr::GetInstance()->SetToken(jsonObj["token"].toString());
+
+        if(jsonObj.contains("apply_list")){
+            UserMgr::GetInstance()->AppendApplyList(jsonObj["apply_list"].toArray());
+        }
 
         emit sig_switch_chatdlg();
     });

@@ -22,12 +22,14 @@ void UserMgr::SetToken(QString token)
 
 int UserMgr::GetUid()
 {
-    return _uid;
+    //return _uid;
+    return _user_info->_uid;
 }
 
 QString UserMgr::GetName()
 {
-    return _name;
+    //return _name;
+    return _user_info->_name;
 }
 
 
@@ -50,6 +52,29 @@ bool UserMgr::AlreadyApply(int uid)
 void UserMgr::AddApplyList(std::shared_ptr<ApplyInfo> app)
 {
     _apply_list.push_back(app);
+}
+
+void UserMgr::SetUserInfo(std::shared_ptr<UserInfo> user_info)
+{
+    _user_info = user_info;
+}
+
+void UserMgr::AppendApplyList(QJsonArray array)
+{
+    // 遍历 QJsonArray 并输出每个元素
+    for (const QJsonValue& value : array) {
+        auto name = value["name"].toString();
+        auto desc = value["desc"].toString();
+        auto icon = value["icon"].toString();
+        auto nick = value["nick"].toString();
+        auto sex = value["sex"].toInt();
+        auto uid = value["uid"].toInt();
+        auto status = value["status"].toInt();
+
+        auto info = std::make_shared<ApplyInfo>(uid, name,
+                                                 desc, icon, nick, sex, status);
+        _apply_list.push_back(info);
+    }
 }
 
 UserMgr::UserMgr()
