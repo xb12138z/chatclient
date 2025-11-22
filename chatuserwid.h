@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "listitembase.h"
+#include "userdata.h"
 
 namespace Ui {
 class ChatUserWid;
@@ -19,14 +20,13 @@ public:
     QSize sizeHint() const override {
         return QSize(250, 70); // 返回自定义的尺寸
     }
+    void SetInfo(std::shared_ptr<UserInfo>);
 
-    void SetInfo(QString name, QString head, QString msg);
+    std::shared_ptr<UserInfo> GetUserInfo();
 
 private:
     Ui::ChatUserWid *ui;
-    QString _name;
-    QString _head;
-    QString _msg;
+    std::shared_ptr<UserInfo> _user_info;
 };
 
 #endif // CHATUSERWID_H

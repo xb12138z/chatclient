@@ -22,7 +22,20 @@ public:
     bool AlreadyApply(int uid);
     void AddApplyList(std::shared_ptr<ApplyInfo> app);
     void AppendApplyList(QJsonArray array);
+    void AppendFriendList(QJsonArray array);
     void SetUserInfo(std::shared_ptr<UserInfo> user_info);
+    bool CheckFriendById(int uid);
+    void AddFriend(std::shared_ptr<AuthRsp> auth_rsp);
+    void AddFriend(std::shared_ptr<AuthInfo> auth_info);
+    std::shared_ptr<FriendInfo> GetFriendById(int uid);
+
+    std::vector<std::shared_ptr<FriendInfo>> GetChatListPerPage();
+    bool IsLoadChatFin();
+    void UpdateChatLoadedCount();
+    std::vector<std::shared_ptr<FriendInfo>> GetConListPerPage();
+    void UpdateContactLoadedCount();
+    bool IsLoadConFin();
+
 private:
     UserMgr();
     QString _name;
@@ -30,6 +43,10 @@ private:
     int _uid;
     std::vector<std::shared_ptr<ApplyInfo>> _apply_list;
     std::shared_ptr<UserInfo> _user_info;
+    QMap<int,std::shared_ptr<FriendInfo>> _friend_map;
+    std::vector<std::shared_ptr<FriendInfo>> _friend_list;
+    int _chat_loaded;
+    int _contact_loaded;
 };
 
 #endif // USERMGR_H
