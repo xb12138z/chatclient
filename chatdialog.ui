@@ -251,10 +251,11 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="ChatPage" name="chat_page"/>
      <widget class="ApplyFriendPage" name="friend_apply_page"/>
+     <widget class="FriendInfoPage" name="friend_info_page"/>
     </widget>
    </item>
   </layout>
@@ -263,7 +264,7 @@
   <customwidget>
    <class>ClickedBtn</class>
    <extends>QPushButton</extends>
-   <header location="global">clickedbtn.h</header>
+   <header>clickedbtn.h</header>
   </customwidget>
   <customwidget>
    <class>CustomizeEdit</class>
@@ -302,6 +303,12 @@
    <class>ContactUserList</class>
    <extends>QListWidget</extends>
    <header location="global">contactuserlist.h</header>
+  </customwidget>
+  <customwidget>
+   <class>FriendInfoPage</class>
+   <extends>QWidget</extends>
+   <header location="global">friendinfopage.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -74,6 +74,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         clickedoncelabel.h clickedoncelabel.cpp
         friendlabel.h friendlabel.cpp friendlabel.ui
         authenfriend.h authenfriend.cpp authenfriend.ui
+        friendinfopage.cpp friendinfopage.h friendinfopage.ui
 
 
 
